@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<div>MongoDB - what is it?</div>
+					<ul class="fragment"> 
+						<br/>
+						<li> Database </li>
+						<br/>
+						<li> NoSQL</li>
+						<br/>
+						<li> Document-oriented</li>
+						<br/>
+						<li> Productive</li>
+						<br/>
+						<li> Scalable</li>
+						<br/>
+					</ul>	
+				</section>
+				<section>
+						<h3 style="color:#4682B4">Flexible layout</h3>
+
+						<p class="fragment">Any JSON can be put into the database
+							<br/>
+						</p>
+						<p class="fragment">
+							db.presenta_ons.insert({ title : “MongoDB”,	<br/>
+								author : { name : “Petrov”,	<br/>
+								last_name  : “Petrovich”},	<br/>
+								date : new Date()
+								});
+						</p>
+				</section>
+				<section>
+						<h3 style="color:#4682B4">No join</h3>
+						<p>Because they harm scalability
+							<br/>
+						</p>
+						<p>
+							db.users.insert({  name : “Petrov”,	<br/>
+								address : { country : Belarus,	<br/>
+									city  : “Minsk”},	<br/>
+								interests : [“man”, “cat”]	<br/>
+							});
+						</p>
+				</section>
+				<section>
+						<h3 style="color:#4682B4">No transactions</h3>
+						<p> Because it also interferes with scalability, instead there are atomic updates at the document level
+							<br/>
+						</p>
+						<p>
+							db.users.update({ _id : 1},
+							{ set : { status : ‘student’ }});
+						</p>
+				</section>
+				<section>
+						<h3 style="color:#4682B4">MongoDB has indexes</h3>
+						<p>There are as usual, and increasing, decreasing, composite, unique
+							<br/>
+						</p>
+						<p>
+							db.foo.ensureIndex({ a : 1 });<br/>
+							db.foo.ensureIndex({ a : 1, b : O1});<br/>
+							db.foo.ensureIndex({c : 1}, {unique : true});<br/>
+							db.foo.ensureIndex({ d : 1}, {background : true});<br/>
+							db.foo.ensureIndex({e : 1}, {sparse : true});<br/>
+						</p>
+				</section>
+				<section>
+					<section>
+						<h3 style="color:#4682B4">Map-Reduce</h3>
+						<div class="fragment">
+						<p>
+							Example <br/>
+							<br/>
+							Raw data
+							<br/>
+							<br/>
+							<div id="left">
+									{
+										username :“Petrovich”,<br/>
+										likes : 3,<br/>
+										text : “Hello world”<br/>
+									}
+							</div>
+						</p>
+						</div>
+					</section>
+					<section>
+							<div>
+									<p>
+										Example <br/>
+										<br/>
+										Map
+										<br/>
+										<br/>
+										<div>
+											var mapper = func_on () { <br/>
+												emit(this.username,{count:1,<br/>
+													likes : this.likes})<br/>
+												}<br/>
+										</div>
+									</p>
+							</div>
+					</section>
+					<section>
+							<div>
+								<p>
+									Example <br/>
+									<br/>
+									Reduce
+									<br/>
+									<br/>
+									<div>
+											var reducer = func_on(key, values) {<br/>
+												var result = {count : 0, likes : 0}; <br/>
+												values.forEach(func_on(value) {<br/>
+												result.count += value.count;<br/>
+												result.likes += value.likes;<br/>
+												});<br/>
+												return result;<br/>
+												}<br/>
+									</div>
+								</p>
+							</div>
+					</section>
+					<section>
+						<div>
+							<p>Execute<br/>
+								<br/>
+								<br/>
+								<br/>
+								<div>
+									db.runCommand({mapreduce : “comments”,<br/>
+										map : mapper,<br/>
+										reduce : reducer,<br/>
+										out : “mr_result”<br/>
+										});<br/>
+								</div>
+							</p>
+						</div>
+					</section>
+					<section>
+							<div>
+								<p>Result<br/>
+									<br/>
+									<br/>
+									<br/>
+									<div>
+											db.mr_result.find();<br/>
+											{_id : 1, value : {likes : 20, count : 3}} <br/>
+											{_id : 40, value : {likes : 0, count : 100}}<br/>
+											{_id : 55, value : {likes : 100500, count : 1}}<br/>
+									</div>	
+								</p>
+							</div>
+					</section>
+				</section>
+				<section>
+						<h3 style="color:#4682B4">GridFS</h3>
+					<div class="fragment">
+						<img style= "margin-top: 0; margin-right : 100px: 100px; border:none;  box-shadow: none; background: none;" src="images/Gridfs.png" alt=""/>
+					</div>
+				</section>
+				<section>
+						<h3 style="color:#4682B4">Sharding</h3>
+						<p>The following graphic describes the interaction of components within a sharded cluster:</p>
+					<div class="fragment">
+						<img style= "margin-top: 0; margin-right : 100px: 100px; border:none;  box-shadow: none; background: none;" src="images/sharded-cluster-production-architecture.bakedsvg.svg" alt=""/>
+					</div>
+				</section>		
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
