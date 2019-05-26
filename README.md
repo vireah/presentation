@@ -3,23 +3,28 @@
 MongoDB is a cross-platform document-oriented database program. 
 Classified as a NoSQL database program, MongoDB uses JSON-like documents with schemata.
 The main purpose of MongoDB is that it should be productive and scalable.
+
 ##(Slide)
 
 The first thing I would like to highlight is a flexible scheme.
 Any JSON can be put into the database. 
+
 ##(Slide)
 
 MongoDB has no joins. because they harm scalability.
 Instead, MongoDB offers data denormalization.
+
 ##(Slide)
 
 MongoDB has no transactions
 Because it also interferes with scalability, instead there are atomic updates at the document level
 This means that the document cannot be partially saved.Either all or nothing.Instead of saving the entire document, you can perform atomic operations. In this case, we update only one field Users
+
 ##(Slide)
 
 MongoDB has indexes.
 There are as usual, and increasing, decreasing, composite, unique
+
 ##(Slide)
 
 Map-reduce is a data processing paradigm for condensing large volumes of data into useful aggregated results. 
@@ -41,9 +46,11 @@ Now we have a function and the function we call execute, indicating the source c
 So we get the following result
 
 ##(Slide)
+
 MongoDB GridFS - rules for storing large files in the MongoDB database. GridFS allows you to store files larger than 16Mb (the maximum document size in MongoDB) through the use of collections. GridFS splits large files into small pieces. These parts are stored in one collection (fs.chunks), and the metadata about a file in another collection (fs.files). When a file request is made, GridFS makes a request to the collection with parts of the file and then returns the entire file.
 
 ##(Slide)
+
 Sharding is a method for distributing data across multiple machines. MongoDB uses sharding to support deployments with very large data sets and high throughput operations.
 
  A MongoDB sharded cluster consists of the following components:
